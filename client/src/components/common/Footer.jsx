@@ -101,11 +101,6 @@ export default function Footer() {
               <li><Link to="/wishlist" className="hover:text-brand-pink transition">My Shortlist / Wishlist</Link></li>
               <li><Link to="/vip-club" className="hover:text-brand-pink transition">VIP Club Benefits</Link></li>
               <li><span className="text-slate-400">Support: care@yuvaattire.com</span></li>
-              <li className="pt-2">
-                <Link to="/admin" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-brand-purple font-bold text-xs hover:bg-slate-700 transition">
-                  <span>Store Manager Login</span>
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

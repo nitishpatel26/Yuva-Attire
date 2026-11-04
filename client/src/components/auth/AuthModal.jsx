@@ -190,29 +190,6 @@ export default function AuthModal({ isOpen, onClose }) {
               {loading ? 'Please wait...' : isLoginMode ? 'Sign In to Yuva Attire' : 'Create Account & Start Shopping'}
             </button>
           </form>
-
-          {/* Quick Demo Logins Helper */}
-          <div className="pt-3 border-t border-slate-100">
-            <p className="text-[11px] font-bold text-slate-400 text-center mb-2 uppercase tracking-wider">
-              1-Click Demo Accounts
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => handleFillDemo('customer')}
-                className="py-2 px-3 rounded-xl bg-slate-50 hover:bg-brand-pink/10 hover:text-brand-pink text-slate-700 text-xs font-bold border border-slate-200 transition text-center"
-              >
-                Demo Parent (Riya)
-              </button>
-              <button
-                type="button"
-                onClick={() => handleFillDemo('admin')}
-                className="py-2 px-3 rounded-xl bg-slate-50 hover:bg-brand-purple/10 hover:text-brand-purple text-slate-700 text-xs font-bold border border-slate-200 transition text-center"
-              >
-                Store Admin
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
