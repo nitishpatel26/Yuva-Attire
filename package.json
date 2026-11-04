@@ -1,0 +1,29 @@
+{
+  "name": "yuva-attire",
+  "version": "1.0.0",
+  "description": "Yuva Attire - Kids Clothing, Shoes & Toys E-Commerce with Razorpay & Admin Dashboard",
+  "main": "server/index.js",
+  "scripts": {
+    "server": "node server/index.js",
+    "client": "npm --prefix client run dev",
+    "dev": "concurrently \"node server/index.js\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "start": "node server/index.js"
+  },
+  "keywords": ["kids-clothing", "ecommerce", "react", "nodejs", "razorpay", "Tranding Fashion"],
+  "author": "Yuva Attire",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "razorpay": "^2.9.5",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
