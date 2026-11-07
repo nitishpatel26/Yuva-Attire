@@ -30,8 +30,8 @@
   background: #94a3b8;
 }
 
-/* Playful Tranding Fashion Badges */
-.badge-Tranding Fashion {
+/* Playful Brand Badges & Gradients */
+.badge-yuva {
   @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider;
 }
 
@@ -39,7 +39,7 @@
   background: linear-gradient(135deg, #FFD166 0%, #FF6B8B 50%, #7209B7 100%);
 }
 
-.gradient-Tranding Fashion {
+.gradient-yuva {
   background: linear-gradient(135deg, #FF4081 0%, #FF6B8B 100%);
 }
 

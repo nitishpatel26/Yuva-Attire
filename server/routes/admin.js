@@ -204,4 +204,119 @@ router.delete('/reviews/:id', requireAdmin, (req, res) => {
   });
 });
 
+// ADMIN: GET All Registered Users with order statistics and VIP status
+router.get('/users', requireAdmin, (req, res) => {
+  const users = db.find('users');
+  const orders = db.find('orders');
+  const vipMemberships = db.find('vipMemberships');
+
+  const enrichedUsers = users.map((u) => {
+    const userOrders = orders.filter((o) => o.userId === u.id);
+    const totalSpent = userOrders
+      .filter((o) => o.paymentStatus === 'PAID')
+      .reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const userVipMembership = vipMemberships.find((v) => v.userId === u.id && v.status === 'ACTIVE');
+
+    let isVip = Boolean(u.isVip);
+    if (u.isVip && u.vipExpiry && new Date(u.vipExpiry) < new Date()) {
+      isVip = false;
+    }
+
+    const { password: _, ...cleanUser } = u;
+    return {
+      ...cleanUser,
+      isVip,
+      totalOrders: userOrders.length,
+      totalSpent: Math.round(totalSpent),
+      vipMembership: userVipMembership || null
+    };
+  });
+
+  enrichedUsers.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  res.json({
+    success: true,
+    total: enrichedUsers.length,
+    users: enrichedUsers
+  });
+});
+
+// ADMIN: Toggle / Grant or Revoke VIP status for any user
+router.patch('/users/:id/vip', requireAdmin, (req, res) => {
+  const userId = req.params.id;
+  const user = db.findById('users', userId);
+
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'User not found' });
+  }
+
+  const { isVip, durationDays, customExpiry, notes } = req.body;
+  const days = Number(durationDays) || 365;
+
+  let newVipExpiry = null;
+  if (isVip) {
+    if (customExpiry) {
+      newVipExpiry = new Date(customExpiry).toISOString();
+    } else {
+      newVipExpiry = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+    }
+  }
+
+  // Update user record
+  const updatedUser = db.updateById('users', userId, {
+    isVip: Boolean(isVip),
+    vipExpiry: newVipExpiry
+  });
+
+  // If granted VIP, insert/update membership record
+  if (isVip) {
+    const existingMembership = db.findOne('vipMemberships', (m) => m.userId === userId);
+    if (existingMembership) {
+      db.updateById('vipMemberships', existingMembership.id, {
+        status: 'ACTIVE',
+        endDate: newVipExpiry,
+        plan: `Admin Granted (${days} Days)`,
+        updatedAt: new Date().toISOString()
+      });
+    } else {
+      const { v4: uuidv4 } = require('uuid');
+      const vipConfig = db.get('vipConfig', { price: 1000, discountPercentage: 15 });
+      db.insert('vipMemberships', {
+        id: `vip_${uuidv4().slice(0, 8)}`,
+        userId: user.id,
+        userName: user.name,
+        userEmail: user.email,
+        phone: user.phone || '',
+        amount: 0,
+        discountPercentage: vipConfig.discountPercentage || 15,
+        plan: notes || `Admin Special Grant (${days} Days)`,
+        startDate: new Date().toISOString(),
+        endDate: newVipExpiry,
+        razorpayPaymentId: 'admin_complimentary_grant',
+        status: 'ACTIVE',
+        totalSavings: 0,
+        createdAt: new Date().toISOString()
+      });
+    }
+  } else {
+    // If revoked
+    const existingMembership = db.findOne('vipMemberships', (m) => m.userId === userId && m.status === 'ACTIVE');
+    if (existingMembership) {
+      db.updateById('vipMemberships', existingMembership.id, {
+        status: 'CANCELLED',
+        updatedAt: new Date().toISOString()
+      });
+    }
+  }
+
+  const { password: _, ...cleanUser } = updatedUser;
+  res.json({
+    success: true,
+    message: isVip
+      ? `VIP status successfully granted to ${user.name} until ${new Date(newVipExpiry).toLocaleDateString()}`
+      : `VIP status revoked for ${user.name}`,
+    user: cleanUser
+  });
+});
+
 module.exports = router;

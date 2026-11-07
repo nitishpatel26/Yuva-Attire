@@ -104,10 +104,12 @@ router.post('/', optionalAuth, (req, res) => {
     }
   }
 
-  // VIP Member Benefit: Extra 15% discount + Free Shipping
+  // VIP Member Benefit: Dynamic discount percentage + Free Express Shipping
   let vipDiscount = 0;
   if (isVip) {
-    vipDiscount = Math.round((subtotal - couponDiscount) * 0.15);
+    const vipConfig = db.get('vipConfig', { discountPercentage: 15 });
+    const discountRate = (vipConfig.discountPercentage || 15) / 100;
+    vipDiscount = Math.round((subtotal - couponDiscount) * discountRate);
   }
 
   // Shipping fee (Free if VIP or order > ₹999, else ₹99)

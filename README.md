@@ -1,12 +1,12 @@
-# Yuva Attire — Tranding Fashion-Inspired Kids Fashion & Accessories E-Commerce
+# Yuva Attire — Premium Kids Fashion & Accessories E-Commerce
 
-**Yuva Attire** is a full-stack, vibrant Kids Fashion, Footwear & Toys e-commerce platform inspired by [Tranding Fashion](https://www.Tranding Fashion.in/), built with **React JS (Vite + Tailwind CSS)** and **Node.js (Express + SQLite/JSON DB)**.
+**Yuva Attire** is a full-stack, vibrant Kids Fashion, Footwear & Toys e-commerce platform built with **React JS (Vite + Tailwind CSS)** and **Node.js (Express + SQLite/JSON DB)**.
 
 ---
 
 ## 🌟 Key Features
 
-### 🛍️ Tranding Fashion-Style Kids Store Experience
+### 🛍️ Premium Kids Store Experience
 - **Kids Catalog & Categorization**: Boys, Girls, Baby/Infants (0-24M), Footwear (Light-up shoes, ballerinas), Montessori Wooden Toys, Bags & Party Wear.
 - **Fast Age Filters**: `0-24 Months`, `2-4 Years`, `4-8 Years`, `8-12 Years`.
 - **Search & Live Autocomplete**: Real-time matching for frocks, tuxedos, shoes, dino bags, toys.
@@ -24,6 +24,15 @@
 - **Early 24-Hour Access** to sales and festive drops.
 - **₹500 Birthday Gift Voucher**.
 - Instant subscription via Razorpay with 365-day validity tracking.
+
+### 📊 Backend Admin Management Dashboard (`/myadmin`)
+- **Secure Admin Authentication**: Hidden administrative portal accessible exclusively via direct URL route `/myadmin`.
+- **Store KPIs & Overview**: Total Revenue, Total Orders, Active VIP Members, Sold-Out & Low-Stock alerts.
+- **Product Management**: Create new listings with image URLs, title, description, category, age group, price, discount price, sizes & stock per size, tags, fabric, and care instructions. Edit and delete products.
+- **Real-Time Inventory Manager**: Automatic stock deduction on purchase, Sold-out toggle, Quick Add Stock (+5, +10).
+- **Order Management**: View customer orders, update order status (`PLACED`, `PROCESSING`, `SHIPPED`, `DELIVERED`, `CANCELLED`) and Delhivery tracking numbers.
+- **Payment & Transaction Tracker**: View all Razorpay payment records, Transaction IDs, Order IDs, Amount, Customer information, and Status (`SUCCESS`, `PENDING`, `FAILED`).
+- **VIP Members Manager**: View all subscribed VIP customers and validity expiration dates.
 
 ---
 
@@ -52,6 +61,14 @@ npm start
 ```
 The Node.js server will serve both the REST API and the built React frontend on `http://localhost:5000`.
 
+---
+
+## 🔑 Demo Login Credentials
+
+| Role | Email | Password | Notes |
+|---|---|---|---|
+| **Parent Customer** | `riya@example.com` | `password123` | Available on storefront login |
+| **Store Admin** | *(Configured via `ADMIN_EMAIL`)* | *(Configured via `ADMIN_PASSWORD`)* | Access via direct URL `/myadmin` |
 
 ---
 
@@ -86,7 +103,7 @@ Yuva-Attire/
 │   │   └── wishlist.js          # Shortlist / Wishlist Persistence
 │   ├── db.js                    # Database Operations
 │   ├── index.js                 # Express Application Entry
-│   └── seedData.js              # Tranding Fashion-Style Initial Kids Catalog
+│   └── seedData.js              # Initial Kids Catalog
 ├── test_e2e.js                  # Automated 12-Step End-to-End Test Suite
 ├── Dockerfile                   # Production Container Image
 ├── render.yaml                  # 1-Click Render Cloud Deployment Blueprint

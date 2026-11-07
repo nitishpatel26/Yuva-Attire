@@ -58,7 +58,7 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <Logo size="md" />
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Yuva Attire brings Tranding Fashion-inspired cheerful, stylish, and high-comfort kids fashion, trendy footwear, educational wooden toys, and cute accessories. Designed with love for tiny trendsetters.
+              Yuva Attire brings cheerful, stylish, and high-comfort kids fashion, trendy footwear, educational wooden toys, and cute accessories. Designed with love for tiny trendsetters.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <Link to="/vip-club" className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-900 font-extrabold text-xs shadow-md">
@@ -93,7 +93,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Customer Care & Admin */}
+          {/* Customer Care */}
           <div>
             <h5 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Customer Care</h5>
             <ul className="space-y-2 text-xs text-slate-400 font-medium">

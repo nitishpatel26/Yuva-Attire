@@ -1,4 +1,5 @@
 const http = require('http');
+require('dotenv').config();
 
 // Helper to make HTTP requests
 function request(options, body) {
@@ -45,9 +46,10 @@ async function runTests() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     },
-    { email: 'admin@yuvaattire.com', password: 'admin123' }
+    { email: process.env.ADMIN_EMAIL || 'admin@yuva.local', password: process.env.ADMIN_PASSWORD || 'YuvaAdmin@2026' }
   );
   adminToken = adminLogin.data.token;
+  console.log('2. Admin Login:', adminLogin.data.success ? '✅ PASSED' : '❌ FAILED');
 
   // 3. Customer Login
   const customerLogin = await request(

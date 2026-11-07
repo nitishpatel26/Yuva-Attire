@@ -307,16 +307,6 @@ export default function Header({ onOpenAuth }) {
                           <Crown className="w-4 h-4 text-amber-500" /> VIP Club Dashboard
                         </Link>
 
-                        {/* Admin Link if Admin */}
-                        {isAdmin && (
-                          <Link
-                            to="/admin"
-                            onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-black text-brand-purple bg-brand-purple/5 hover:bg-brand-purple/10"
-                          >
-                            <LayoutDashboard className="w-4 h-4 text-brand-purple" /> Admin Store Dashboard
-                          </Link>
-                        )}
                       </div>
 
                       <div className="pt-1 border-t border-slate-50">
@@ -347,7 +337,7 @@ export default function Header({ onOpenAuth }) {
         </div>
       </div>
 
-      {/* Tranding Fashion Category Nav Bar */}
+      {/* Main Category Navigation Bar */}
       <nav className="bg-white border-t border-slate-100 hidden lg:block overflow-x-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ul className="flex items-center justify-between gap-1 py-1.5">
@@ -432,16 +422,6 @@ export default function Header({ onOpenAuth }) {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100">
-              <Link
-                to="/admin"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 text-white text-xs font-bold"
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                <span>Admin Management Portal</span>
-              </Link>
-            </div>
           </div>
         </div>
       )}

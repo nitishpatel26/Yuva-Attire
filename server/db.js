@@ -47,6 +47,16 @@ class Database {
   }
 
   // Generic helpers
+  get(key, defaultValue = null) {
+    return this.data[key] !== undefined ? this.data[key] : defaultValue;
+  }
+
+  set(key, value) {
+    this.data[key] = value;
+    this.save();
+    return value;
+  }
+
   find(collection, predicate) {
     if (!this.data[collection]) return [];
     if (!predicate) return this.data[collection];

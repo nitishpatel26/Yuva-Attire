@@ -13,24 +13,40 @@ export default function VipClubPage() {
   const navigate = useNavigate();
 
   const [vipStatus, setVipStatus] = useState(null);
+  const [vipConfig, setVipConfig] = useState({
+    price: 1000,
+    discountPercentage: 15,
+    durationDays: 365,
+    durationLabel: '1 Year (365 Days)',
+    benefits: [
+      'Flat Extra 15% OFF on every single order (No upper limit)',
+      'Free Express Shipping with zero minimum order value',
+      'Early 24-Hour VIP Access to Mega Sales & Festive Drops',
+      'Special ₹500 Birthday Gift Voucher for your child',
+      'Dedicated 24/7 Priority Parent Support & Quick Exchanges'
+    ]
+  });
   const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetch('/api/vip/status', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('yuva_token')}` }
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            setVipStatus(data);
+    // Fetch VIP config & current user VIP status
+    const token = localStorage.getItem('yuva_token');
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    fetch('/api/vip/status', { headers })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setVipStatus(data);
+          if (data.planDetails) {
+            setVipConfig(data.planDetails);
           }
-        })
-        .catch(() => {});
-    }
+        }
+      })
+      .catch(() => {});
   }, [isAuthenticated]);
 
   const handleSubscribeClick = () => {
@@ -74,33 +90,10 @@ export default function VipClubPage() {
     }
   };
 
-  const benefits = [
-    {
-      title: 'Flat Extra 15% OFF Every Order',
-      desc: 'No upper cap or minimum purchase requirement. Stacks with sale items!',
-      icon: <Sparkles className="w-6 h-6 text-amber-500" />
-    },
-    {
-      title: 'Free Express Doorstep Shipping',
-      desc: 'Zero shipping charges on any order value with priority dispatch.',
-      icon: <Truck className="w-6 h-6 text-blue-500" />
-    },
-    {
-      title: 'Early 24-Hr VIP Mega Sale Access',
-      desc: 'Grab limited festive drops & trending kids collections before anyone else.',
-      icon: <Zap className="w-6 h-6 text-purple-500" />
-    },
-    {
-      title: '₹500 Birthday Gift Voucher',
-      desc: 'Delightful birthday treat for your little one on their special day.',
-      icon: <Gift className="w-6 h-6 text-rose-500" />
-    },
-    {
-      title: 'Dedicated Priority Parent Support',
-      desc: 'Direct WhatsApp and phone assistance with hassle-free 7-day exchanges.',
-      icon: <HeartHandshake className="w-6 h-6 text-emerald-500" />
-    }
-  ];
+  const currentPrice = vipConfig.price ?? 1000;
+  const currentDiscount = vipConfig.discountPercentage ?? 15;
+  const currentDurationLabel = vipConfig.durationLabel || `${vipConfig.durationDays || 365} Days`;
+  const benefitsList = vipConfig.benefits || [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
@@ -113,11 +106,11 @@ export default function VipClubPage() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-            Unlock Year-Round 15% Extra Savings for Just ₹1,000!
+            Unlock Year-Round {currentDiscount}% Extra Savings for Just ₹{currentPrice.toLocaleString('en-IN')}!
           </h1>
 
           <p className="text-sm sm:text-base font-semibold text-slate-800 leading-relaxed">
-            The ultimate smart shopping club for stylish parents. Enjoy flat 15% discount on all kids apparel, shoes, and toys, plus free express shipping for 365 days.
+            The ultimate smart shopping club for stylish parents. Enjoy flat {currentDiscount}% discount on all kids apparel, shoes, and toys, plus free express shipping for {currentDurationLabel}.
           </p>
 
           {isVip ? (
@@ -127,7 +120,7 @@ export default function VipClubPage() {
                   <Crown className="w-4 h-4 fill-amber-300" /> YOUR VIP STATUS IS ACTIVE
                 </p>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  Validity: 365 Days (Auto-applied in your cart & checkout)
+                  {vipStatus?.vipExpiry ? `Valid until: ${new Date(vipStatus.vipExpiry).toLocaleDateString()}` : `Validity: ${currentDurationLabel}`} (Auto-applied in cart & checkout)
                 </p>
               </div>
               <button
@@ -145,7 +138,7 @@ export default function VipClubPage() {
                 className="px-8 py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm flex items-center gap-2 shadow-xl transition"
               >
                 <Crown className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span>Join VIP Club • ₹1,000 / Year</span>
+                <span>Join VIP Club • ₹{currentPrice.toLocaleString('en-IN')} ({currentDurationLabel})</span>
               </button>
 
               <span className="text-xs font-bold text-slate-800">
@@ -158,11 +151,16 @@ export default function VipClubPage() {
         <div className="w-full md:w-auto flex justify-center">
           <div className="p-6 rounded-3xl bg-white/90 backdrop-blur-md shadow-xl border border-white max-w-xs text-center space-y-3">
             <span className="text-[11px] font-black uppercase text-amber-800 tracking-wider">ANNUAL VIP PASS</span>
-            <div className="text-4xl font-black text-slate-900">₹1,000<span className="text-xs font-bold text-slate-500"> / year</span></div>
-            <p className="text-xs font-semibold text-slate-600">Average parent saves <span className="font-bold text-emerald-600">₹4,200+</span> per year!</p>
+            <div className="text-4xl font-black text-slate-900">
+              ₹{currentPrice.toLocaleString('en-IN')}
+              <span className="text-xs font-bold text-slate-500"> / {vipConfig.durationDays || 365} days</span>
+            </div>
+            <p className="text-xs font-semibold text-slate-600">
+              Average parent saves <span className="font-bold text-emerald-600">₹4,200+</span> every year!
+            </p>
             <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-1 text-[11px] font-bold text-slate-500">
               <Clock className="w-3.5 h-3.5 text-amber-600" />
-              <span>Valid for 365 Days from Purchase</span>
+              <span>Valid for {currentDurationLabel}</span>
             </div>
           </div>
         </div>
@@ -190,16 +188,16 @@ export default function VipClubPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {benefits.map((b, i) => (
+          {benefitsList.map((benefit, i) => (
             <div
               key={i}
               className="p-6 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition space-y-3"
             >
-              <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100">
-                {b.icon}
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center border border-amber-100">
+                <Crown className="w-6 h-6 text-amber-600" />
               </div>
-              <h3 className="text-sm font-black text-slate-800">{b.title}</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">{b.desc}</p>
+              <h3 className="text-sm font-black text-slate-800">VIP Benefit #{i + 1}</h3>
+              <p className="text-xs text-slate-600 font-semibold leading-relaxed">{benefit}</p>
             </div>
           ))}
 
@@ -209,14 +207,23 @@ export default function VipClubPage() {
               <span className="text-[10px] font-black uppercase text-amber-400 tracking-wider">ANNUAL SAVINGS BREAKDOWN</span>
               <h3 className="text-sm font-black mt-1">Spend ₹10,000 on Kids Fashion</h3>
               <div className="space-y-1.5 mt-3 text-xs text-slate-300">
-                <p className="flex justify-between"><span>15% Flat Discount:</span> <span className="font-bold text-emerald-400">Save ₹1,500</span></p>
-                <p className="flex justify-between"><span>Free Express Shipping (6 orders):</span> <span className="font-bold text-emerald-400">Save ₹594</span></p>
-                <p className="flex justify-between"><span>Birthday Voucher:</span> <span className="font-bold text-emerald-400">Save ₹500</span></p>
+                <p className="flex justify-between">
+                  <span>{currentDiscount}% VIP Extra Discount:</span>
+                  <span className="font-bold text-emerald-400">Save ₹{Math.round(10000 * (currentDiscount / 100)).toLocaleString('en-IN')}</span>
+                </p>
+                <p className="flex justify-between">
+                  <span>Free Express Shipping (6 orders):</span>
+                  <span className="font-bold text-emerald-400">Save ₹594</span>
+                </p>
+                <p className="flex justify-between">
+                  <span>Birthday Treat Voucher:</span>
+                  <span className="font-bold text-emerald-400">Save ₹500</span>
+                </p>
               </div>
             </div>
             <div className="pt-3 border-t border-slate-700 flex justify-between items-center text-xs font-black text-amber-300">
-              <span>Net Savings:</span>
-              <span className="text-base text-amber-400">₹2,594 - ₹1,000 = ₹1,594 Profit!</span>
+              <span>Net Benefit:</span>
+              <span className="text-sm font-bold text-amber-400">High Return on VIP Membership!</span>
             </div>
           </div>
         </div>
@@ -226,7 +233,7 @@ export default function VipClubPage() {
       <RazorpayModal
         isOpen={isRazorpayOpen}
         onClose={() => setIsRazorpayOpen(false)}
-        amount={1000}
+        amount={currentPrice}
         orderData={{ customerName: user?.name, customerEmail: user?.email }}
         type="VIP_MEMBERSHIP"
         onSuccess={handleRazorpaySuccess}

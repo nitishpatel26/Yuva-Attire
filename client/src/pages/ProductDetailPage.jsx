@@ -87,7 +87,12 @@ export default function ProductDetailPage() {
     );
   }
 
-  const price = product.discountPrice || product.price;
+  const currentSizeObj = product.sizes?.find((s) => s.size === selectedSize);
+  const originalPrice = currentSizeObj?.price || product.price;
+  const price = currentSizeObj?.discountPrice || currentSizeObj?.price || product.discountPrice || product.price;
+  const discountPercentage = originalPrice > price
+    ? Math.round(((originalPrice - price) / originalPrice) * 100)
+    : (product.discountPercentage || 0);
   const vipPrice = Math.round(price * 0.85);
   const wishlisted = isWishlisted(product.id);
 
@@ -164,11 +169,22 @@ export default function ProductDetailPage() {
     }
   };
 
-  // Rating Distribution Calculation
-  const totalReviewsCount = reviewsList.length || product.reviewsCount || 1;
+  // Dynamic Ratings Calculation from approved reviews list
+  const hasReviews = reviewsList.length > 0;
+  const totalReviewsCount = reviewsList.length;
+  const averageRating = hasReviews
+    ? (reviewsList.reduce((sum, r) => sum + r.rating, 0) / totalReviewsCount).toFixed(1)
+    : null;
   const rating5Count = reviewsList.filter((r) => r.rating === 5).length;
   const rating4Count = reviewsList.filter((r) => r.rating === 4).length;
   const rating3Count = reviewsList.filter((r) => r.rating === 3).length;
+  const rating2Count = reviewsList.filter((r) => r.rating === 2).length;
+  const rating1Count = reviewsList.filter((r) => r.rating === 1).length;
+  const pct5 = hasReviews ? Math.round((rating5Count / totalReviewsCount) * 100) : 0;
+  const pct4 = hasReviews ? Math.round((rating4Count / totalReviewsCount) * 100) : 0;
+  const pct3 = hasReviews ? Math.round((rating3Count / totalReviewsCount) * 100) : 0;
+  const pct2 = hasReviews ? Math.round((rating2Count / totalReviewsCount) * 100) : 0;
+  const pct1 = hasReviews ? Math.round((rating1Count / totalReviewsCount) * 100) : 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
@@ -233,13 +249,20 @@ export default function ProductDetailPage() {
             <p className="text-xs text-slate-400 mt-1 font-mono">SKU: {product.sku}</p>
 
             {/* Rating */}
-            <div className="flex items-center gap-2 mt-3">
-              <div className="flex items-center text-amber-400">
-                <Star className="w-4 h-4 fill-amber-400" />
+            {hasReviews ? (
+              <div className="flex items-center gap-2 mt-3">
+                <div className="flex items-center text-amber-400">
+                  <Star className="w-4 h-4 fill-amber-400" />
+                </div>
+                <span className="text-xs font-bold text-slate-800">{averageRating}</span>
+                <span className="text-xs text-slate-400">({totalReviewsCount} verified parent {totalReviewsCount === 1 ? 'review' : 'reviews'})</span>
               </div>
-              <span className="text-xs font-bold text-slate-800">{product.rating || '4.9'}</span>
-              <span className="text-xs text-slate-400">({product.reviewsCount || reviewsList.length || 1} verified parent reviews)</span>
-            </div>
+            ) : (
+              <div className="flex items-center gap-1.5 mt-3 text-xs text-slate-400">
+                <Star className="w-4 h-4 text-slate-300" />
+                <span>No reviews yet</span>
+              </div>
+            )}
           </div>
 
           {/* Price Card with VIP Discount */}
@@ -248,14 +271,14 @@ export default function ProductDetailPage() {
               <span className="text-3xl font-black text-slate-900">
                 ₹{price.toLocaleString('en-IN')}
               </span>
-              {product.discountPrice && (
+              {originalPrice > price && (
                 <span className="text-base text-slate-400 line-through">
-                  ₹{product.price.toLocaleString('en-IN')}
+                  ₹{originalPrice.toLocaleString('en-IN')}
                 </span>
               )}
-              {product.discountPercentage > 0 && (
+              {discountPercentage > 0 && (
                 <span className="px-2.5 py-0.5 rounded-xl bg-rose-100 text-rose-700 text-xs font-black">
-                  Save {product.discountPercentage}%
+                  Save {discountPercentage}%
                 </span>
               )}
             </div>
@@ -290,27 +313,37 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="flex flex-wrap gap-2.5">
-                {product.sizes.map((s) => (
-                  <button
-                    key={s.size}
-                    disabled={s.stock === 0}
-                    onClick={() => setSelectedSize(s.size)}
-                    className={`px-4 py-2.5 rounded-2xl text-xs font-bold border transition ${
-                      selectedSize === s.size
-                        ? 'bg-slate-900 text-white border-slate-900 shadow-md'
-                        : s.stock === 0
-                        ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed line-through'
-                        : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
-                    }`}
-                  >
-                    <span>{s.size}</span>
-                    {s.stock > 0 && s.stock <= 4 && (
-                      <span className="text-[10px] text-amber-400 block font-normal">
-                        Only {s.stock} left
-                      </span>
-                    )}
-                  </button>
-                ))}
+                {product.sizes.map((s) => {
+                  const sizePrice = s.discountPrice || s.price;
+                  return (
+                    <button
+                      key={s.size}
+                      disabled={s.stock === 0}
+                      onClick={() => setSelectedSize(s.size)}
+                      className={`px-4 py-2.5 rounded-2xl text-xs font-bold border transition flex flex-col items-center gap-0.5 ${
+                        selectedSize === s.size
+                          ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+                          : s.stock === 0
+                          ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed line-through'
+                          : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span>{s.size}</span>
+                        {sizePrice && sizePrice !== (product.discountPrice || product.price) && (
+                          <span className={`text-[11px] font-black ${selectedSize === s.size ? 'text-amber-300' : 'text-brand-pink'}`}>
+                            • ₹{sizePrice.toLocaleString('en-IN')}
+                          </span>
+                        )}
+                      </div>
+                      {s.stock > 0 && s.stock <= 4 && (
+                        <span className="text-[10px] text-amber-400 font-normal">
+                          Only {s.stock} left
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -556,53 +589,82 @@ export default function ProductDetailPage() {
         )}
 
         {/* Ratings Breakdown Summary Card */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 sm:p-8 rounded-3xl bg-white border border-slate-100 shadow-sm">
-          {/* Average Box */}
-          <div className="flex flex-col items-center justify-center p-4 border-b md:border-b-0 md:border-r border-slate-100 text-center">
-            <span className="text-4xl sm:text-5xl font-black text-slate-900 font-display">
-              {product.rating || '4.9'}
-            </span>
-            <div className="flex items-center text-amber-400 my-2">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} className="w-4 h-4 fill-amber-400" />
-              ))}
+        {hasReviews ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 sm:p-8 rounded-3xl bg-white border border-slate-100 shadow-sm">
+            {/* Average Box */}
+            <div className="flex flex-col items-center justify-center p-4 border-b md:border-b-0 md:border-r border-slate-100 text-center">
+              <span className="text-4xl sm:text-5xl font-black text-slate-900 font-display">
+                {averageRating}
+              </span>
+              <div className="flex items-center text-amber-400 my-2">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star
+                    key={s}
+                    className={`w-4 h-4 ${
+                      s <= Math.round(Number(averageRating)) ? 'fill-amber-400 text-amber-400' : 'text-slate-200'
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="text-xs text-slate-400 font-bold">
+                Based on {totalReviewsCount} verified {totalReviewsCount === 1 ? 'rating' : 'ratings'}
+              </p>
             </div>
-            <p className="text-xs text-slate-400 font-bold">
-              Based on {reviewsList.length || product.reviewsCount || 1} verified ratings
-            </p>
-          </div>
 
-          {/* Rating Bars */}
-          <div className="md:col-span-2 space-y-2 flex flex-col justify-center text-xs">
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-slate-600 w-12">5 Star</span>
-              <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-amber-400 rounded-full" style={{ width: '85%' }}></div>
+            {/* Rating Bars */}
+            <div className="md:col-span-2 space-y-2 flex flex-col justify-center text-xs">
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-slate-600 w-12">5 Star</span>
+                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-amber-400 rounded-full transition-all duration-500" style={{ width: `${pct5}%` }}></div>
+                </div>
+                <span className="font-bold text-slate-400 w-8">{pct5}%</span>
               </div>
-              <span className="font-bold text-slate-400 w-8">85%</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-slate-600 w-12">4 Star</span>
-              <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-amber-400 rounded-full" style={{ width: '12%' }}></div>
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-slate-600 w-12">4 Star</span>
+                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-amber-400 rounded-full transition-all duration-500" style={{ width: `${pct4}%` }}></div>
+                </div>
+                <span className="font-bold text-slate-400 w-8">{pct4}%</span>
               </div>
-              <span className="font-bold text-slate-400 w-8">12%</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-slate-600 w-12">3 Star</span>
-              <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-amber-400 rounded-full" style={{ width: '3%' }}></div>
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-slate-600 w-12">3 Star</span>
+                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-amber-400 rounded-full transition-all duration-500" style={{ width: `${pct3}%` }}></div>
+                </div>
+                <span className="font-bold text-slate-400 w-8">{pct3}%</span>
               </div>
-              <span className="font-bold text-slate-400 w-8">3%</span>
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-slate-600 w-12">2 Star</span>
+                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-amber-400 rounded-full transition-all duration-500" style={{ width: `${pct2}%` }}></div>
+                </div>
+                <span className="font-bold text-slate-400 w-8">{pct2}%</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-slate-600 w-12">1 Star</span>
+                <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-amber-400 rounded-full transition-all duration-500" style={{ width: `${pct1}%` }}></div>
+                </div>
+                <span className="font-bold text-slate-400 w-8">{pct1}%</span>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="p-8 text-center bg-white rounded-3xl border border-slate-100 shadow-sm space-y-2">
+            <div className="w-12 h-12 mx-auto rounded-full bg-amber-50 text-amber-400 flex items-center justify-center">
+              <Star className="w-6 h-6 stroke-1 fill-amber-100" />
+            </div>
+            <p className="text-sm font-bold text-slate-700">No reviews available currently</p>
+            <p className="text-xs text-slate-400">Be the first parent to review this product!</p>
+          </div>
+        )}
 
         {/* Reviews List */}
         <div className="space-y-4">
           {reviewsList.length === 0 ? (
             <div className="p-8 text-center bg-white rounded-3xl border border-slate-100 text-xs text-slate-400">
-              No reviews written yet. Be the first happy parent to review this outfit!
+              No reviews available currently. Be the first parent to review this product!
             </div>
           ) : (
             reviewsList.map((rev) => (

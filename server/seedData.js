@@ -1,23 +1,67 @@
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 
+function syncAdminUser() {
+  const adminEmail = (process.env.ADMIN_EMAIL || 'admin@yuva.local').toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD || 'YuvaAdmin@2026';
+  const adminPasswordHash = bcrypt.hashSync(adminPassword, 10);
+
+  const existingAdmin = db.findOne('users', (u) => u.role === 'admin' || u.email.toLowerCase() === adminEmail);
+
+  if (existingAdmin) {
+    db.updateById('users', existingAdmin.id, {
+      email: adminEmail,
+      password: adminPasswordHash,
+      role: 'admin'
+    });
+    console.log(`🔐 Admin account synchronized from environment: ${adminEmail}`);
+  } else {
+    const newAdmin = {
+      id: 'usr_admin_01',
+      name: 'Yuva Admin',
+      email: adminEmail,
+      password: adminPasswordHash,
+      role: 'admin',
+      isVip: true,
+      vipExpiry: '2028-12-31T23:59:59.000Z',
+      phone: '+91 9876543210',
+      addresses: [
+        {
+          id: 'addr_1',
+          name: 'Yuva Attire Headquarters',
+          street: '45, Fashion Avenue, Bandra West',
+          city: 'Mumbai',
+          state: 'Maharashtra',
+          pincode: '400050',
+          phone: '+91 9876543210',
+          isDefault: true
+        }
+      ],
+      createdAt: new Date().toISOString()
+    };
+    db.insert('users', newAdmin);
+    console.log(`🔐 Admin account created from environment: ${adminEmail}`);
+  }
+}
+
 async function seedDatabase() {
+  // Always synchronize admin account from current environment variables (Local .env or PROD)
+  syncAdminUser();
+
   // Check if already seeded with products
   if (db.find('products').length > 0) {
-    console.log('Database already has products. Skipping seed.');
+    console.log('Database already has products. Skipping product seed.');
     return;
   }
 
   console.log('Seeding initial data for Yuva Attire...');
 
-  // 1. Seed Users
-  const adminPasswordHash = bcrypt.hashSync('admin123', 10);
   const userPasswordHash = bcrypt.hashSync('password123', 10);
 
   const adminUser = {
     id: 'usr_admin_01',
     name: 'Yuva Admin',
-    email: 'admin@yuvaattire.com',
+    email: adminEmail,
     password: adminPasswordHash,
     role: 'admin',
     isVip: true,
@@ -92,7 +136,7 @@ async function seedDatabase() {
 
   coupons.forEach((c) => db.insert('coupons', c));
 
-  // 3. Seed Products (High quality Tranding Fashion-style kids items across Boys, Girls, Infants, Shoes, Toys, Accessories)
+  // 3. Seed Products (High quality Yuva Attire kids items across Boys, Girls, Infants, Shoes, Toys, Accessories)
   const products = [
     {
       id: 'prod_001',
@@ -604,7 +648,7 @@ async function seedDatabase() {
     createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
   });
 
-  console.log('Database seeded successfully with Tranding Fashion-style Kids collections!');
+  console.log('Database seeded successfully with Yuva Attire Kids collections!');
 }
 
 module.exports = { seedDatabase };

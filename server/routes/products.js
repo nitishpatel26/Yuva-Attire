@@ -6,7 +6,24 @@ const { requireAdmin, optionalAuth } = require('../middleware/auth');
 
 // Get all products with rich filtering, search, sorting & pagination for Infinite Scroll
 router.get('/', (req, res) => {
-  let products = db.find('products');
+  // Aggregate real approved reviews by productId
+  const allApprovedReviews = db.find('reviews', (r) => r.status === 'APPROVED' || !r.status);
+  const reviewsCountMap = {};
+  const reviewsSumMap = {};
+  allApprovedReviews.forEach((r) => {
+    reviewsCountMap[r.productId] = (reviewsCountMap[r.productId] || 0) + 1;
+    reviewsSumMap[r.productId] = (reviewsSumMap[r.productId] || 0) + (Number(r.rating) || 0);
+  });
+
+  let products = db.find('products').map((p) => {
+    const count = reviewsCountMap[p.id] || 0;
+    const avg = count > 0 ? Number((reviewsSumMap[p.id] / count).toFixed(1)) : null;
+    return {
+      ...p,
+      reviewsCount: count,
+      rating: avg
+    };
+  });
 
   const {
     category,
@@ -165,12 +182,31 @@ router.get('/meta/categories', (req, res) => {
 
 // Get single product by ID with approved reviews & related items
 router.get('/:id', (req, res) => {
-  const product = db.findById('products', req.params.id);
-  if (!product) {
+  const rawProduct = db.findById('products', req.params.id);
+  if (!rawProduct) {
     return res.status(404).json({ success: false, message: 'Product not found' });
   }
 
-  // Fetch related products in same category/gender
+  // Fetch approved reviews for this product
+  const reviews = db.find(
+    'reviews',
+    (r) => r.productId === rawProduct.id && (r.status === 'APPROVED' || !r.status)
+  );
+
+  reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  const totalReviews = reviews.length;
+  const avgRating = totalReviews > 0
+    ? Number((reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / totalReviews).toFixed(1))
+    : null;
+
+  const product = {
+    ...rawProduct,
+    reviewsCount: totalReviews,
+    rating: avgRating
+  };
+
+  // Fetch related products in same category/gender with dynamic reviews
   const relatedProducts = db
     .find(
       'products',
@@ -178,15 +214,16 @@ router.get('/:id', (req, res) => {
         p.id !== product.id &&
         (p.category === product.category || p.gender === product.gender)
     )
-    .slice(0, 4);
-
-  // Fetch approved reviews for this product
-  const reviews = db.find(
-    'reviews',
-    (r) => r.productId === product.id && (r.status === 'APPROVED' || !r.status)
-  );
-
-  reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    .slice(0, 4)
+    .map((p) => {
+      const relReviews = db.find('reviews', (r) => r.productId === p.id && (r.status === 'APPROVED' || !r.status));
+      const relCount = relReviews.length;
+      return {
+        ...p,
+        reviewsCount: relCount,
+        rating: relCount > 0 ? Number((relReviews.reduce((sum, r) => sum + r.rating, 0) / relCount).toFixed(1)) : null
+      };
+    });
 
   res.json({
     success: true,
@@ -304,10 +341,15 @@ router.post('/', requireAdmin, (req, res) => {
   const discountPercentage =
     numPrice > numDiscountPrice ? Math.round(((numPrice - numDiscountPrice) / numPrice) * 100) : 0;
 
-  // Process sizes and stock calculation
+  // Process sizes, size-specific pricing and stock calculation
   const processedSizes = Array.isArray(sizes) && sizes.length > 0
-    ? sizes.map((s) => ({ size: s.size, stock: Number(s.stock) || 0 }))
-    : [{ size: 'Standard', stock: 10 }];
+    ? sizes.map((s) => ({
+        size: s.size || 'Standard',
+        stock: Number(s.stock) || 0,
+        price: s.price !== undefined && s.price !== '' ? Number(s.price) : numPrice,
+        discountPrice: s.discountPrice !== undefined && s.discountPrice !== '' ? Number(s.discountPrice) : numDiscountPrice
+      }))
+    : [{ size: 'Standard', stock: 10, price: numPrice, discountPrice: numDiscountPrice }];
 
   const totalStock = processedSizes.reduce((sum, s) => sum + s.stock, 0);
 
@@ -323,8 +365,8 @@ router.post('/', requireAdmin, (req, res) => {
     discountPrice: numDiscountPrice,
     discountPercentage,
     sku: `YUV-${category.slice(0, 3).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`,
-    rating: 5.0,
-    reviewsCount: 1,
+    rating: null,
+    reviewsCount: 0,
     isNewArrival: !!isNewArrival,
     isBestSeller: !!isBestSeller,
     isFeatured: !!isFeatured,
@@ -367,7 +409,15 @@ router.put('/:id', requireAdmin, (req, res) => {
   }
 
   if (updates.sizes && Array.isArray(updates.sizes)) {
-    updates.sizes = updates.sizes.map((s) => ({ size: s.size, stock: Number(s.stock) || 0 }));
+    const basePrice = updates.price !== undefined ? Number(updates.price) : (existing.price || 0);
+    const baseDisc = updates.discountPrice !== undefined ? Number(updates.discountPrice) : (existing.discountPrice || basePrice);
+
+    updates.sizes = updates.sizes.map((s) => ({
+      size: s.size,
+      stock: Number(s.stock) || 0,
+      price: s.price !== undefined && s.price !== '' ? Number(s.price) : basePrice,
+      discountPrice: s.discountPrice !== undefined && s.discountPrice !== '' ? Number(s.discountPrice) : baseDisc
+    }));
     updates.totalStock = updates.sizes.reduce((sum, s) => sum + s.stock, 0);
     updates.isSoldOut = updates.totalStock === 0;
   }

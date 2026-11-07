@@ -15,7 +15,13 @@ export default function QuickViewModal({ product, onClose }) {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
-  const price = product.discountPrice || product.price;
+  const currentSizeObj = product.sizes?.find((s) => s.size === selectedSize);
+  const originalPrice = currentSizeObj?.price || product.price;
+  const price = currentSizeObj?.discountPrice || currentSizeObj?.price || product.discountPrice || product.price;
+  const discountPercentage = originalPrice > price
+    ? Math.round(((originalPrice - price) / originalPrice) * 100)
+    : (product.discountPercentage || 0);
+  const vipPrice = Math.round(price * 0.85);
   const wishlisted = isWishlisted(product.id);
 
   const handleAddToCart = () => {
@@ -74,24 +80,26 @@ export default function QuickViewModal({ product, onClose }) {
 
               <h2 className="text-lg font-black text-slate-900 leading-snug">{product.title}</h2>
 
-              {/* Rating */}
-              <div className="flex items-center gap-2 mt-2">
-                <div className="flex items-center text-amber-400">
-                  <Star className="w-4 h-4 fill-amber-400" />
+              {/* Rating - Only shown if there are actual customer reviews */}
+              {product.reviewsCount > 0 && product.rating ? (
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="flex items-center text-amber-400">
+                    <Star className="w-4 h-4 fill-amber-400" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-800">{product.rating}</span>
+                  <span className="text-xs text-slate-400">({product.reviewsCount} {product.reviewsCount === 1 ? 'review' : 'reviews'})</span>
                 </div>
-                <span className="text-xs font-bold text-slate-800">{product.rating}</span>
-                <span className="text-xs text-slate-400">({product.reviewsCount} reviews)</span>
-              </div>
+              ) : null}
 
               {/* Price */}
               <div className="flex items-baseline gap-3 my-4">
                 <span className="text-2xl font-black text-slate-900">₹{price.toLocaleString('en-IN')}</span>
-                {product.discountPrice && (
-                  <span className="text-sm text-slate-400 line-through">₹{product.price.toLocaleString('en-IN')}</span>
+                {originalPrice > price && (
+                  <span className="text-sm text-slate-400 line-through">₹{originalPrice.toLocaleString('en-IN')}</span>
                 )}
-                {product.discountPercentage > 0 && (
+                {discountPercentage > 0 && (
                   <span className="px-2 py-0.5 rounded-lg bg-rose-100 text-rose-700 text-xs font-black">
-                    {product.discountPercentage}% OFF
+                    {discountPercentage}% OFF
                   </span>
                 )}
               </div>
@@ -102,7 +110,7 @@ export default function QuickViewModal({ product, onClose }) {
                   <Crown className="w-4 h-4 text-amber-600 fill-amber-600" />
                   <span>VIP Members Pay:</span>
                 </span>
-                <span className="font-black text-amber-800 text-sm">₹{Math.round(price * 0.85).toLocaleString('en-IN')}</span>
+                <span className="font-black text-amber-800 text-sm">₹{vipPrice.toLocaleString('en-IN')}</span>
               </div>
 
               {/* Size Selector */}

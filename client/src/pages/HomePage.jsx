@@ -34,7 +34,7 @@ export default function HomePage() {
 
   const heroBanners = [
     {
-      title: 'Tranding Fashion Style Festival Trends!',
+      title: 'Festive & Celebration Kids Trends!',
       subtitle: 'Playful twirl frocks, dapper suits & festive ethnic sets for your tiny trendsetters.',
       cta: 'Explore Girls & Boys Wear',
       link: '/shop?category=clothing',
@@ -90,7 +90,7 @@ export default function HomePage() {
           <div className="max-w-xl space-y-4 z-10">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-yellow-300 text-xs font-black uppercase tracking-wider border border-white/30">
               <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '4s' }} />
-              <span>Tranding Fashion Inspired Kids Fashion</span>
+              <span>Premium Kids Fashion</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
@@ -188,7 +188,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <span className="text-xs font-black text-brand-pink uppercase tracking-wider">Tranding Fashion Curations</span>
+            <span className="text-xs font-black text-brand-pink uppercase tracking-wider">Trending Curations</span>
             <h2 className="text-2xl font-black text-slate-900 mt-1">Trending Kids Collections</h2>
           </div>
           <Link to="/shop" className="text-xs font-bold text-brand-pink hover:underline hidden sm:inline-flex items-center gap-1">

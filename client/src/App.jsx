@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -19,13 +19,29 @@ import VipClubPage from './pages/VipClubPage';
 import UserProfilePage from './pages/UserProfilePage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 
+// ScrollToTop on every route and search param change
+function ScrollToTop() {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+  }, [pathname, search]);
+
+  return null;
+}
+
 function AppContent() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
-  const isAdminPath = location.pathname.startsWith('/admin');
+  const isAdminPath = location.pathname.startsWith('/myadmin');
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-cream/30 text-slate-800">
+      <ScrollToTop />
       {/* Header is shown on store pages */}
       <Header onOpenAuth={() => setIsAuthModalOpen(true)} />
 
@@ -40,7 +56,7 @@ function AppContent() {
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/vip-club" element={<VipClubPage />} />
           <Route path="/profile" element={<UserProfilePage />} />
-          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/myadmin" element={<AdminDashboardPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
       </main>

@@ -100,12 +100,9 @@ export default function ProductCard({ product, onQuickView }) {
       {/* Product Details */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          {/* Category & Age Group Tag */}
+          {/* Category */}
           <div className="flex items-center justify-between text-[11px] text-slate-400 font-semibold mb-1">
             <span className="capitalize">{product.gender} • {product.category}</span>
-            <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-bold text-[10px]">
-              {product.ageGroup}
-            </span>
           </div>
 
           {/* Product Title */}
@@ -115,14 +112,16 @@ export default function ProductCard({ product, onQuickView }) {
             </h3>
           </Link>
 
-          {/* Ratings */}
-          <div className="flex items-center gap-1.5 mt-1.5">
-            <div className="flex items-center text-amber-400">
-              <Star className="w-3.5 h-3.5 fill-amber-400" />
+          {/* Ratings - Only shown if there are actual customer reviews */}
+          {product.reviewsCount > 0 && product.rating ? (
+            <div className="flex items-center gap-1.5 mt-1.5">
+              <div className="flex items-center text-amber-400">
+                <Star className="w-3.5 h-3.5 fill-amber-400" />
+              </div>
+              <span className="text-xs font-bold text-slate-700">{product.rating}</span>
+              <span className="text-[11px] text-slate-400">({product.reviewsCount})</span>
             </div>
-            <span className="text-xs font-bold text-slate-700">{product.rating || '4.8'}</span>
-            <span className="text-[11px] text-slate-400">({product.reviewsCount || 42})</span>
-          </div>
+          ) : null}
         </div>
 
         {/* Pricing & Add to Cart Action */}

@@ -1,12 +1,12 @@
 # Dependencies (Do not commit to git)
 node_modules/
 client/node_modules/
-server/data/database.json
 
 # Secret Environment Files (NEVER push keys to GitHub!)
 .env
 .env.local
 *.env
+.env.example
 
 # Build outputs (Render will build this automatically)
 client/dist/
@@ -17,3 +17,5 @@ dist/
 Thumbs.db
 .vscode/
 *.log
+
+server/data/database.json

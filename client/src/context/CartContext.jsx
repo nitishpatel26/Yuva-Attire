@@ -44,11 +44,16 @@ export function CartProvider({ children }) {
         (item) => item.productId === product.id && item.size === size && item.color === color
       );
 
-      const price = product.discountPrice || product.price;
+      // Look up specific size price if configured
+      const sizeObj = product.sizes?.find((s) => s.size === size);
+      const price = sizeObj?.discountPrice || sizeObj?.price || product.discountPrice || product.price;
+      const originalPrice = sizeObj?.price || product.price;
 
       if (existingIndex > -1) {
         const updated = [...prev];
         updated[existingIndex].quantity += quantity;
+        updated[existingIndex].price = price;
+        updated[existingIndex].originalPrice = originalPrice;
         updated[existingIndex].subtotal = updated[existingIndex].quantity * price;
         return updated;
       }
@@ -64,7 +69,7 @@ export function CartProvider({ children }) {
           size,
           color,
           price,
-          originalPrice: product.price,
+          originalPrice,
           quantity,
           subtotal: price * quantity
         }
