@@ -3,11 +3,11 @@
     {
       "id": "usr_admin_01",
       "name": "Yuva Admin",
-      "email": "admin@yuvaattire.com",
-      "password": "$2a$10$dMb90horDdDd4v4vIy0kmuQBrXPx6NKEFjK/GGmIhZDGNqJWuKBha",
+      "email": "yuva@yuvaattire.com",
+      "password": "$2a$10$MJc/.1aW5o.auFBS6fZHrugTxd3Su938vQfwBcRXsSZV.MdNWelEG",
       "role": "admin",
       "isVip": true,
-      "vipExpiry": "2028-12-31T23:59:59.000Z",
+      "vipExpiry": "2036-11-04T08:48:38.922Z",
       "phone": "+91 9876543210",
       "addresses": [
         {
@@ -21,7 +21,8 @@
           "isDefault": true
         }
       ],
-      "createdAt": "2026-11-03T09:04:19.647Z"
+      "createdAt": "2026-11-03T09:04:19.647Z",
+      "updatedAt": "2026-11-07T10:36:44.039Z"
     },
     {
       "id": "usr_cust_01",
@@ -29,8 +30,8 @@
       "email": "riya@example.com",
       "password": "$2a$10$mOrqyoPwFfRALARLLSEeBOCbSpWwfFsmln/a6lyVetDFSNkIpV/X6",
       "role": "customer",
-      "isVip": true,
-      "vipExpiry": "2027-11-03T09:28:13.252Z",
+      "isVip": false,
+      "vipExpiry": null,
       "phone": "+91 9123456789",
       "addresses": [
         {
@@ -45,58 +46,50 @@
         }
       ],
       "createdAt": "2026-11-03T09:04:19.649Z",
-      "updatedAt": "2026-11-03T09:28:13.252Z"
+      "updatedAt": "2026-11-07T08:20:57.591Z"
+    },
+    {
+      "id": "usr_306ce7a2",
+      "name": "Ananya Verma",
+      "email": "ananya@example.com",
+      "password": "$2a$10$e2AkLB3EiCVyLFQC.LvLw.dnJbm909ydDLvynIdu8/MsPj3QGNrdK",
+      "role": "customer",
+      "isVip": false,
+      "vipExpiry": null,
+      "phone": "+91 9811223344",
+      "isEmailVerified": true,
+      "isPhoneVerified": true,
+      "addresses": [],
+      "createdAt": "2026-11-07T10:00:25.665Z"
+    },
+    {
+      "id": "usr_44b590dd",
+      "name": "Nitish Patel",
+      "email": "patel.nitish22@gmail.com",
+      "password": "$2a$10$.fNRQf.YUAGbcbb/qHjDfOPv6SFdWjmYxPS3yR3nRW3VHOG/YZ8U6",
+      "role": "customer",
+      "isVip": false,
+      "vipExpiry": null,
+      "phone": "+91 8359961835",
+      "isEmailVerified": true,
+      "isPhoneVerified": true,
+      "addresses": [],
+      "createdAt": "2026-11-07T10:04:58.203Z"
+    },
+    {
+      "id": "usr_eb881525",
+      "name": "Kavita Mehra",
+      "email": "kavita_mehra@test.com",
+      "password": "$2a$10$myvIqTb/7cdnXn2hMl/rf.A4/WOeqTOdMQoVqSsrw4h6bVex54Iy2",
+      "role": "customer",
+      "isVip": false,
+      "vipExpiry": null,
+      "phone": "+91 9876512340",
+      "addresses": [],
+      "createdAt": "2026-11-07T10:46:40.220Z"
     }
   ],
   "products": [
-    {
-      "id": "prod_009",
-      "title": "Pastel Floral Twirl Frock with Bow Headband (Updated Edition)",
-      "description": "Ergonomic water-resistant lightweight neoprene mini backpack with safety detachable rein strap, breathable padded back panel, and chest harness clip.",
-      "category": "clothing",
-      "subCategory": "bags",
-      "gender": "girls",
-      "ageGroup": "2-4Y",
-      "price": 1999,
-      "discountPrice": 1299,
-      "discountPercentage": 35,
-      "sku": "YUV-ACC-009",
-      "rating": 5,
-      "reviewsCount": 1,
-      "isNewArrival": true,
-      "isBestSeller": true,
-      "isFeatured": true,
-      "images": [
-        "https://images.unsplash.com/photo-1546938576-6e6a64f317cc?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=800&q=80"
-      ],
-      "sizes": [
-        {
-          "size": "2-3Y",
-          "stock": 27
-        },
-        {
-          "size": "3-4Y",
-          "stock": 17
-        }
-      ],
-      "totalStock": 45,
-      "isSoldOut": false,
-      "tags": [
-        "Backpack",
-        "Dinosaur",
-        "Travel",
-        "Toddler Bag"
-      ],
-      "colors": [
-        "Dino Green",
-        "Sky Blue"
-      ],
-      "fabric": "Waterproof Neoprene Fabric",
-      "careInstructions": "Hand wash with mild soap",
-      "createdAt": "2026-11-03T09:04:19.653Z",
-      "updatedAt": "2026-11-04T14:27:29.139Z"
-    },
     {
       "id": "prod_003",
       "title": "Ultra-Soft Organic Cotton Baby Rompers (Pack of 3)",
@@ -109,8 +102,8 @@
       "discountPrice": 899,
       "discountPercentage": 40,
       "sku": "YUV-INF-003",
-      "rating": 4.9,
-      "reviewsCount": 230,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": false,
       "isBestSeller": true,
       "isFeatured": true,
@@ -153,7 +146,8 @@
       ],
       "fabric": "100% GOTS Certified Organic Cotton",
       "careInstructions": "Machine wash warm, tumble dry low",
-      "createdAt": "2026-11-03T09:04:19.651Z"
+      "createdAt": "2026-11-03T09:04:19.651Z",
+      "updatedAt": "2026-11-07T09:15:15.661Z"
     },
     {
       "id": "prod_007",
@@ -167,8 +161,8 @@
       "discountPrice": 1999,
       "discountPercentage": 39,
       "sku": "YUV-GRL-007",
-      "rating": 4.9,
-      "reviewsCount": 175,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": true,
       "isBestSeller": true,
       "isFeatured": true,
@@ -210,7 +204,7 @@
       "fabric": "Sequin & Tulle Mesh with Cotton Underlayer",
       "careInstructions": "Dry clean or gentle hand wash",
       "createdAt": "2026-11-03T09:04:19.652Z",
-      "updatedAt": "2026-11-04T14:48:34.614Z"
+      "updatedAt": "2026-11-07T09:15:15.663Z"
     },
     {
       "id": "prod_001",
@@ -224,8 +218,8 @@
       "discountPrice": 1199,
       "discountPercentage": 37,
       "sku": "YUV-GRL-001",
-      "rating": 4.8,
-      "reviewsCount": 142,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": true,
       "isBestSeller": true,
       "isFeatured": true,
@@ -235,23 +229,25 @@
       ],
       "sizes": [
         {
-          "size": "1-2Y",
-          "stock": 12
-        },
-        {
           "size": "2-3Y",
-          "stock": 18
+          "stock": 12,
+          "price": 1499,
+          "discountPrice": 899
         },
         {
           "size": "3-4Y",
-          "stock": 10
+          "stock": 8,
+          "price": 1599,
+          "discountPrice": 999
         },
         {
           "size": "4-5Y",
-          "stock": 6
+          "stock": 5,
+          "price": 1799,
+          "discountPrice": 1199
         }
       ],
-      "totalStock": 46,
+      "totalStock": 25,
       "isSoldOut": false,
       "tags": [
         "Party Wear",
@@ -265,7 +261,8 @@
       ],
       "fabric": "100% Breathable Cotton with Satin Bow",
       "careInstructions": "Gentle hand wash in cold water",
-      "createdAt": "2026-11-03T09:04:19.650Z"
+      "createdAt": "2026-11-03T09:04:19.650Z",
+      "updatedAt": "2026-11-07T09:15:15.666Z"
     },
     {
       "id": "prod_002",
@@ -279,8 +276,8 @@
       "discountPrice": 1899,
       "discountPercentage": 37,
       "sku": "YUV-BOY-002",
-      "rating": 4.9,
-      "reviewsCount": 98,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": true,
       "isBestSeller": true,
       "isFeatured": true,
@@ -320,7 +317,8 @@
       ],
       "fabric": "Fine Poly-Cotton Suiting Blend",
       "careInstructions": "Dry clean recommended",
-      "createdAt": "2026-11-03T09:04:19.650Z"
+      "createdAt": "2026-11-03T09:04:19.650Z",
+      "updatedAt": "2026-11-07T09:15:15.666Z"
     },
     {
       "id": "prod_010",
@@ -334,8 +332,8 @@
       "discountPrice": 1449,
       "discountPercentage": 37,
       "sku": "YUV-TOY-010",
-      "rating": 4.9,
-      "reviewsCount": 121,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": true,
       "isBestSeller": true,
       "isFeatured": true,
@@ -363,7 +361,8 @@
       ],
       "fabric": "Durable ABS Shockproof Body",
       "careInstructions": "Keep away from water submersion",
-      "createdAt": "2026-11-03T09:04:19.653Z"
+      "createdAt": "2026-11-03T09:04:19.653Z",
+      "updatedAt": "2026-11-07T09:15:15.667Z"
     },
     {
       "id": "prod_004",
@@ -377,8 +376,8 @@
       "discountPrice": 1399,
       "discountPercentage": 36,
       "sku": "YUV-SHO-004",
-      "rating": 4.7,
-      "reviewsCount": 88,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": true,
       "isBestSeller": true,
       "isFeatured": true,
@@ -422,7 +421,8 @@
       ],
       "fabric": "Breathable Mesh & PU Leather",
       "careInstructions": "Wipe with damp cloth",
-      "createdAt": "2026-11-03T09:04:19.651Z"
+      "createdAt": "2026-11-03T09:04:19.651Z",
+      "updatedAt": "2026-11-07T09:15:15.668Z"
     },
     {
       "id": "prod_005",
@@ -436,8 +436,8 @@
       "discountPrice": 1599,
       "discountPercentage": 36,
       "sku": "YUV-TOY-005",
-      "rating": 4.9,
-      "reviewsCount": 165,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": false,
       "isBestSeller": true,
       "isFeatured": true,
@@ -464,7 +464,60 @@
       ],
       "fabric": "Solid Eco-Wood with Non-toxic Water Paint",
       "careInstructions": "Wipe clean with dry cloth",
-      "createdAt": "2026-11-03T09:04:19.651Z"
+      "createdAt": "2026-11-03T09:04:19.651Z",
+      "updatedAt": "2026-11-07T09:15:15.669Z"
+    },
+    {
+      "id": "prod_009",
+      "title": "Pastel Floral Twirl Frock with Bow Headband (Updated Edition)",
+      "description": "Ergonomic water-resistant lightweight neoprene mini backpack with safety detachable rein strap, breathable padded back panel, and chest harness clip.",
+      "category": "clothing",
+      "subCategory": "bags",
+      "gender": "girls",
+      "ageGroup": "2-4Y",
+      "price": 1999,
+      "discountPrice": 1299,
+      "discountPercentage": 35,
+      "sku": "YUV-ACC-009",
+      "rating": 5,
+      "reviewsCount": 1,
+      "isNewArrival": true,
+      "isBestSeller": true,
+      "isFeatured": true,
+      "images": [
+        "https://images.unsplash.com/photo-1546938576-6e6a64f317cc?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=800&q=80"
+      ],
+      "sizes": [
+        {
+          "size": "2-3Y",
+          "stock": 27,
+          "price": 1999,
+          "discountPrice": 1299
+        },
+        {
+          "size": "3-4Y",
+          "stock": 17,
+          "price": 1999,
+          "discountPrice": 1299
+        }
+      ],
+      "totalStock": 45,
+      "isSoldOut": false,
+      "tags": [
+        "Backpack",
+        "Dinosaur",
+        "Travel",
+        "Toddler Bag"
+      ],
+      "colors": [
+        "Dino Green",
+        "Sky Blue"
+      ],
+      "fabric": "Waterproof Neoprene Fabric",
+      "careInstructions": "Hand wash with mild soap",
+      "createdAt": "2026-11-03T09:04:19.653Z",
+      "updatedAt": "2026-11-07T09:15:15.670Z"
     },
     {
       "id": "prod_012",
@@ -478,8 +531,8 @@
       "discountPrice": 1299,
       "discountPercentage": 35,
       "sku": "YUV-ACC-012",
-      "rating": 4.9,
-      "reviewsCount": 205,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": false,
       "isBestSeller": true,
       "isFeatured": true,
@@ -511,7 +564,7 @@
       "fabric": "Polished Resin, Satin & Faux Crystals",
       "careInstructions": "Store in protective pouch",
       "createdAt": "2026-11-03T09:04:19.654Z",
-      "updatedAt": "2026-11-03T10:28:44.736Z"
+      "updatedAt": "2026-11-07T09:15:15.671Z"
     },
     {
       "id": "prod_006",
@@ -525,8 +578,8 @@
       "discountPrice": 1499,
       "discountPercentage": 40,
       "sku": "YUV-ETH-006",
-      "rating": 4.8,
-      "reviewsCount": 110,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": true,
       "isBestSeller": false,
       "isFeatured": true,
@@ -562,7 +615,8 @@
       ],
       "fabric": "Art Silk Blend with 100% Cotton Lining",
       "careInstructions": "Dry clean only",
-      "createdAt": "2026-11-03T09:04:19.652Z"
+      "createdAt": "2026-11-03T09:04:19.652Z",
+      "updatedAt": "2026-11-07T09:15:15.674Z"
     },
     {
       "id": "prod_008",
@@ -576,8 +630,8 @@
       "discountPrice": 999,
       "discountPercentage": 38,
       "sku": "YUV-SHO-008",
-      "rating": 4.6,
-      "reviewsCount": 74,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": false,
       "isBestSeller": false,
       "isFeatured": false,
@@ -616,7 +670,8 @@
       ],
       "fabric": "Glitter Vegan Leather with Rubber Sole",
       "careInstructions": "Wipe with soft clean cloth",
-      "createdAt": "2026-11-03T09:04:19.652Z"
+      "createdAt": "2026-11-03T09:04:19.652Z",
+      "updatedAt": "2026-11-07T09:15:15.676Z"
     },
     {
       "id": "prod_6e47c7e4",
@@ -630,8 +685,8 @@
       "discountPrice": 999,
       "discountPercentage": 38,
       "sku": "YUV-CLO-690",
-      "rating": 4.8,
-      "reviewsCount": 1,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": false,
       "isBestSeller": false,
       "isFeatured": false,
@@ -660,7 +715,7 @@
       "fabric": "100% Breathable Cotton",
       "careInstructions": "Machine wash warm",
       "createdAt": "2026-11-03T09:28:13.232Z",
-      "updatedAt": "2026-11-03T09:28:13.257Z"
+      "updatedAt": "2026-11-07T09:15:15.678Z"
     },
     {
       "id": "prod_011",
@@ -674,8 +729,8 @@
       "discountPrice": 1599,
       "discountPercentage": 36,
       "sku": "YUV-BOY-011",
-      "rating": 4.7,
-      "reviewsCount": 65,
+      "rating": null,
+      "reviewsCount": 0,
       "isNewArrival": true,
       "isBestSeller": false,
       "isFeatured": false,
@@ -715,10 +770,52 @@
       ],
       "fabric": "Rich French Terry Fleece Cotton",
       "careInstructions": "Machine wash with like colors",
-      "createdAt": "2026-11-03T09:04:19.654Z"
+      "createdAt": "2026-11-03T09:04:19.654Z",
+      "updatedAt": "2026-11-07T09:15:15.680Z"
     }
   ],
   "orders": [
+    {
+      "id": "ord_243795c5",
+      "orderNumber": "YUV-2026-4750",
+      "userId": "usr_admin_01",
+      "customerName": "Yuva Admin",
+      "customerEmail": "admin@yuva.local",
+      "customerPhone": "+91 9876543210",
+      "shippingAddress": {
+        "name": "Yuva Admin",
+        "street": "45, Fashion Avenue, Bandra West",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pincode": "400050",
+        "phone": "+91 9876543210"
+      },
+      "items": [
+        {
+          "productId": "prod_007",
+          "title": "Shimmer Sequin Tulle Layered Princess Gown",
+          "image": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=800&q=80",
+          "size": "4-5Y",
+          "color": "Lavender Mist",
+          "quantity": 1,
+          "price": 1999,
+          "subtotal": 1999
+        }
+      ],
+      "subtotal": 1999,
+      "discount": 0,
+      "vipDiscount": 300,
+      "shippingFee": 0,
+      "tax": 0,
+      "totalAmount": 1699,
+      "paymentMethod": "razorpay",
+      "paymentStatus": "PAID",
+      "orderStatus": "PLACED",
+      "razorpayOrderId": "order_rzp_b6r4h6p8",
+      "razorpayPaymentId": "pay_rzp_b9xxj1p6",
+      "trackingNumber": "DELHIVERY-YUV-2026-4750",
+      "createdAt": "2026-11-04T14:48:34.616Z"
+    },
     {
       "id": "ord_2c3cc7f0",
       "orderNumber": "YUV-2026-7510",
@@ -810,50 +907,43 @@
       "razorpayPaymentId": "pay_demo_772194",
       "trackingNumber": "DELHIVERY-YUV-882190",
       "createdAt": "2026-11-01T09:04:19.655Z"
-    },
-    {
-      "id": "ord_243795c5",
-      "orderNumber": "YUV-2026-4750",
-      "userId": "usr_admin_01",
-      "customerName": "Yuva Admin",
-      "customerEmail": "admin@yuvaattire.com",
-      "customerPhone": "+91 9876543210",
-      "shippingAddress": {
-        "name": "Yuva Admin",
-        "street": "45, Fashion Avenue, Bandra West",
-        "city": "Mumbai",
-        "state": "Maharashtra",
-        "pincode": "400050",
-        "phone": "+91 9876543210"
-      },
-      "items": [
-        {
-          "productId": "prod_007",
-          "title": "Shimmer Sequin Tulle Layered Princess Gown",
-          "image": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=800&q=80",
-          "size": "4-5Y",
-          "color": "Lavender Mist",
-          "quantity": 1,
-          "price": 1999,
-          "subtotal": 1999
-        }
-      ],
-      "subtotal": 1999,
-      "discount": 0,
-      "vipDiscount": 300,
-      "shippingFee": 0,
-      "tax": 0,
-      "totalAmount": 1699,
-      "paymentMethod": "razorpay",
-      "paymentStatus": "PAID",
-      "orderStatus": "PLACED",
-      "razorpayOrderId": "order_rzp_b6r4h6p8",
-      "razorpayPaymentId": "pay_rzp_b9xxj1p6",
-      "trackingNumber": "DELHIVERY-YUV-2026-4750",
-      "createdAt": "2026-11-04T14:48:34.616Z"
     }
   ],
   "payments": [
+    {
+      "id": "pay_tx_ff017668",
+      "transactionId": "TXN_YUV_982151",
+      "orderId": "ord_243795c5",
+      "userId": "usr_admin_01",
+      "customerName": "Yuva Admin",
+      "customerEmail": "admin@yuva.local",
+      "amount": 1699,
+      "currency": "INR",
+      "method": "Razorpay Instant",
+      "status": "SUCCESS",
+      "razorpayOrderId": "order_rzp_b6r4h6p8",
+      "razorpayPaymentId": "pay_rzp_b9xxj1p6",
+      "razorpaySignature": "sig_verified_instant",
+      "type": "ORDER",
+      "createdAt": "2026-11-04T14:48:34.618Z"
+    },
+    {
+      "id": "pay_tx_0b86c567",
+      "transactionId": "TXN_YUV_401361",
+      "orderId": null,
+      "userId": "usr_admin_01",
+      "customerName": "Yuva Admin",
+      "customerEmail": "admin@yuva.local",
+      "amount": 1699,
+      "currency": "INR",
+      "method": "Visa / Mastercard",
+      "status": "SUCCESS",
+      "razorpayOrderId": "order_rzp_b6r4h6p8",
+      "razorpayPaymentId": "pay_rzp_b9xxj1p6",
+      "razorpaySignature": "sig_r89z6x12ul",
+      "type": "ORDER",
+      "createdAt": "2026-11-04T14:48:34.599Z"
+    },
     {
       "id": "pay_tx_72908b88",
       "transactionId": "TXN_YUV_836767",
@@ -921,43 +1011,25 @@
       "razorpaySignature": "sig_demo_vip_verified",
       "type": "VIP_MEMBERSHIP",
       "createdAt": "2026-10-24T09:04:19.656Z"
-    },
-    {
-      "id": "pay_tx_0b86c567",
-      "transactionId": "TXN_YUV_401361",
-      "orderId": null,
-      "userId": "usr_admin_01",
-      "customerName": "Yuva Admin",
-      "customerEmail": "admin@yuvaattire.com",
-      "amount": 1699,
-      "currency": "INR",
-      "method": "Visa / Mastercard",
-      "status": "SUCCESS",
-      "razorpayOrderId": "order_rzp_b6r4h6p8",
-      "razorpayPaymentId": "pay_rzp_b9xxj1p6",
-      "razorpaySignature": "sig_r89z6x12ul",
-      "type": "ORDER",
-      "createdAt": "2026-11-04T14:48:34.599Z"
-    },
-    {
-      "id": "pay_tx_ff017668",
-      "transactionId": "TXN_YUV_982151",
-      "orderId": "ord_243795c5",
-      "userId": "usr_admin_01",
-      "customerName": "Yuva Admin",
-      "customerEmail": "admin@yuvaattire.com",
-      "amount": 1699,
-      "currency": "INR",
-      "method": "Razorpay Instant",
-      "status": "SUCCESS",
-      "razorpayOrderId": "order_rzp_b6r4h6p8",
-      "razorpayPaymentId": "pay_rzp_b9xxj1p6",
-      "razorpaySignature": "sig_verified_instant",
-      "type": "ORDER",
-      "createdAt": "2026-11-04T14:48:34.618Z"
     }
   ],
   "vipMemberships": [
+    {
+      "id": "vip_10b0562f",
+      "userId": "usr_admin_01",
+      "userName": "Yuva Admin",
+      "userEmail": "yuva@yuvaattire.com",
+      "phone": "+91 9876543210",
+      "amount": 0,
+      "discountPercentage": 15,
+      "plan": "Admin Special Grant (3650 Days)",
+      "startDate": "2026-11-07T08:48:38.926Z",
+      "endDate": "2036-11-04T08:48:38.922Z",
+      "razorpayPaymentId": "admin_complimentary_grant",
+      "status": "ACTIVE",
+      "totalSavings": 0,
+      "createdAt": "2026-11-07T08:48:38.926Z"
+    },
     {
       "id": "vip_b23bf560",
       "userId": "usr_cust_01",
@@ -965,13 +1037,14 @@
       "userEmail": "riya@example.com",
       "phone": "+91 9123456789",
       "amount": 1000,
-      "plan": "1_YEAR_VIP",
+      "plan": "Admin Granted (365 Days)",
       "startDate": "2026-11-03T09:28:13.253Z",
-      "endDate": "2027-11-03T09:28:13.252Z",
+      "endDate": "2027-11-07T08:18:16.114Z",
       "razorpayPaymentId": "pay_test_vip_12345",
-      "status": "ACTIVE",
+      "status": "CANCELLED",
       "totalSavings": 0,
-      "createdAt": "2026-11-03T09:28:13.253Z"
+      "createdAt": "2026-11-03T09:28:13.253Z",
+      "updatedAt": "2026-11-07T08:20:57.594Z"
     },
     {
       "id": "vip_mem_01",
@@ -992,6 +1065,11 @@
   "wishlists": {
     "usr_cust_01": [
       "prod_6e47c7e4"
+    ],
+    "usr_admin_01": [
+      "prod_003",
+      "prod_007",
+      "prod_002"
     ]
   },
   "reviews": [
@@ -1036,5 +1114,20 @@
       "description": "Exclusive 15% VIP shopping discount",
       "createdAt": "2026-11-03T09:04:19.650Z"
     }
-  ]
+  ],
+  "vipConfig": {
+    "price": 1000,
+    "discountPercentage": 15,
+    "durationDays": 365,
+    "durationLabel": "1 Year (365 Days)",
+    "isActive": true,
+    "benefits": [
+      "Flat Extra 15% OFF on every single order (No upper limit)",
+      "Free Express Shipping with zero minimum order value",
+      "Early 24-Hour VIP Access to Mega Sales & Festive Drops",
+      "Special ₹500 Birthday Gift Voucher for your child",
+      "Dedicated 24/7 Priority Parent Support & Quick Exchanges"
+    ],
+    "updatedAt": "2026-11-07T08:18:16.135Z"
+  }
 }
